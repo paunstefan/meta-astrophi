@@ -23,6 +23,10 @@ This layer depends on:
 4. Set INIT_MANAGER in local.conf to `"systemv"`
 5. Optional: Set ENABLE_UART in local.conf to "1" if you need to acces device over UART
 6. `bitbake astrophi-zerow`
+7. Copy the image using `bmaptool`: `sudo bmaptool copy --bmap astrophi-zerow-raspberrypi0-wifi.wic.bmap  astrophi-zerow-raspberrypi0-wifi.wic.bz2 [device_file]`
+   
+OR
+
 7. Extract the `astrophi-zerow-raspberrypi0-wifi.wic.bz2` and copy it to an SD card (using `dd` or `cp`)
 8. Boot your RPi
 

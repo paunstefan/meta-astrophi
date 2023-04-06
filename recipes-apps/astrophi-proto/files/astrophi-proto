@@ -1,0 +1,66 @@
+#!/usr/bin/python3
+import subprocess
+import os
+import argparse
+
+TEMP_FILE = "./astrophi_temp"
+
+TOTAL_FRAMES = 0
+
+
+def shoot_photos(count: int):
+    global TOTAL_FRAMES
+    try:
+        output = subprocess.Popen(f"gphoto2 -q --capture-image-and-download --frames {count} --interval 1 --filename {TOTAL_FRAMES}-%n.cr2",
+                                  stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+
+        out, err = output.communicate()
+        if err:
+            raise Exception("Failed taking photos")
+
+        print(f"Took frames: {TOTAL_FRAMES + 1} - {TOTAL_FRAMES + count}")
+        TOTAL_FRAMES += count
+        with open(TEMP_FILE, 'w+') as f:
+            f.truncate(0)
+            f.write(str(TOTAL_FRAMES))
+
+    except Exception as e:
+        print(f"ERROR: {e}")
+
+
+def init_argparse() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        usage="%(prog)s [OPTION]",
+        description="Astrophotography camera control."
+    )
+    parser.add_argument("-s", "--shoot", type=int, nargs=1)
+    parser.add_argument('-r', '--reset',
+                        action='store_true')
+
+    return parser
+
+
+if __name__ == '__main__':
+    os.chdir('/home/astro/')
+
+    parser = init_argparse()
+    args = parser.parse_args()
+
+    if args.reset:
+        print("Reseting temp")
+        try:
+            os.remove(TEMP_FILE)
+        except FileNotFoundError:
+            pass
+        except Exception as e:
+            print(f"ERROR: {e}")
+    elif args.shoot:
+        if not os.path.exists(TEMP_FILE):
+            print("Creating temp file")
+            with open(TEMP_FILE, 'w') as f:
+                f.write("0")
+        else:
+            with open(TEMP_FILE, 'r') as f:
+                total = f.read()
+                TOTAL_FRAMES = int(total)
+        shoot_photos(int(args.shoot[0]))
