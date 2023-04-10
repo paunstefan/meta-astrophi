@@ -11,7 +11,7 @@ TOTAL_FRAMES = 0
 def shoot_photos(count: int):
     global TOTAL_FRAMES
     try:
-        output = subprocess.Popen(f"gphoto2 -q --capture-image-and-download --frames {count} --interval 1 --filename {TOTAL_FRAMES}-%n.cr2",
+        output = subprocess.Popen(f"gphoto2 -q --capture-image --frames {count} --interval 1",
                                   stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
 
         out, err = output.communicate()
