@@ -11,6 +11,7 @@ DISTRO_FEATURES:append = " wifi "
 IMAGE_INSTALL += "sudo net-tools openssh python3"
 IMAGE_INSTALL += "gphoto2"
 IMAGE_INSTALL += "astrophi-proto"
+IMAGE_INSTALL += "gphoto2-udev"
 
 EXTRA_USERS_PARAMS = "\
                     useradd -p '$(openssl passwd private)' astro; \
