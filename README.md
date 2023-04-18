@@ -14,6 +14,8 @@ This layer depends on:
 * URI: <git://git.yoctoproject.org/meta-raspberrypi>
   * branch: kirkstone
   * Observation: should theoretically work on other devices, but it was only tested on the Raspberry Pi
+* URI: <https://github.com/rust-embedded/meta-rust-bin>
+  * branch: master
   
 ## Building
 
@@ -21,9 +23,10 @@ This layer depends on:
 2. Add the dependency layers and this one to `bblayers.conf` 
 3. Set MACHINE in local.conf to `raspberrypi0-wifi` (or another supported board)
 4. Set INIT_MANAGER in local.conf to `"systemv"`
-5. Optional: Set ENABLE_UART in local.conf to "1" if you need to acces device over UART
-6. `bitbake astrophi-zerow`
-7. Copy the image using `bmaptool`: `sudo bmaptool copy --bmap astrophi-zerow-raspberrypi0-wifi.wic.bmap  astrophi-zerow-raspberrypi0-wifi.wic.bz2 [device_file]`
+5. Set BBMASK in local.conf `"poky/meta/recipes-devtools/rust"`
+6. Optional: Set ENABLE_UART in local.conf to "1" if you need to acces device over UART
+7. `bitbake astrophi-zerow`
+8. Copy the image using `bmaptool`: `sudo bmaptool copy --bmap astrophi-zerow-raspberrypi0-wifi.wic.bmap  astrophi-zerow-raspberrypi0-wifi.wic.bz2 [device_file]`
    
 OR
 
