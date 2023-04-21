@@ -8,7 +8,7 @@ export BINDGEN_EXTRA_CLANG_ARGS
 BINDGEN_EXTRA_CLANG_ARGS = "--sysroot=${WORKDIR}/recipe-sysroot -I${WORKDIR}/recipe-sysroot/usr/include"
 
 SRC_URI += "git://git@github.com/paunstefan/astrophi.git;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "138b252bc7f2e796564e56924a18935a2178b3a6"
+SRCREV = "9f16e4c02b0c75143ed6ecbccd88966b9a841cf5"
 S = "${WORKDIR}/git"
 LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=a55eb95beff031c355cacdab76c7edd2 \
