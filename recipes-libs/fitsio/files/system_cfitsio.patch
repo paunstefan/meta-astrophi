@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index 06e7aed..0ddbc48 100644
+--- a/setup.py
++++ b/setup.py
+@@ -31,7 +31,7 @@ class build_ext_subclass(build_ext):
+     cfitsio_dir = 'cfitsio%s' % cfitsio_version
+ 
+     def initialize_options(self):
+-        self.use_system_fitsio = False
++        self.use_system_fitsio = True
+         self.system_fitsio_includedir = None
+         self.system_fitsio_libdir = None
+         build_ext.initialize_options(self)

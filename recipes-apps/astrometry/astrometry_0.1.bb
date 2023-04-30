@@ -9,5 +9,15 @@ LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=71e53350ee5227c22dae3b0406fa53d1 \
 "
 
-DEPENDS += "cairo libpng libjpeg-turbo libzip bzip2 python3 python3-dev python3-numpy swig"
-#DEPENDS += "netpbm cfitsio fitsio/astropy/pyfits"
+DEPENDS += "cairo libpng libjpeg-turbo libzip bzip2 python3 python3-numpy swig netpbm cfitsio fitsio"
+
+#inherit autotools
+inherit pkgconfig
+
+do_compile () {
+    export ARCH_FLAGS=""
+    # Build solving system
+    oe_runmake
+    # Build plotting code
+    #oe_runmake extra
+}
