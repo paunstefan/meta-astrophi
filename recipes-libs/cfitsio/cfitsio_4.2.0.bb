@@ -11,6 +11,8 @@ SRC_URI[md5sum] = "2aa08d626765868d22a875740667f400"
 SRC_URI[sha256sum] = "eba53d1b3f6e345632bb09a7b752ec7ced3d63ec5153a848380f3880c5d61889"
 
 DEPENDS = "zlib curl bzip2"
+RDEPENDS:${PN} += "zlib curl bzip2"
+
 
 inherit pkgconfig
 inherit autotools-brokensep
@@ -20,6 +22,7 @@ TARGET_CC_ARCH += "${LDFLAGS}"
 do_install () {
     install -d ${D}${libdir}
     install -d ${D}${includedir}
+    install -d ${D}${libdir}/pkgconfig
     install -m 0755 ${WORKDIR}/cfitsio-${PV}/libcfitsio.a ${D}${libdir}/libcfitsio.a
     install -m 0755 ${WORKDIR}/cfitsio-${PV}/libcfitsio.so.10.${PV} ${D}${libdir}/libcfitsio.so.10.${PV}
     ln -s -r ${D}${libdir}/libcfitsio.so.10.${PV} ${D}${libdir}/libcfitsio.so.10
@@ -28,6 +31,10 @@ do_install () {
     do
         install -m 0755 ${WORKDIR}/cfitsio-${PV}/${header} ${D}${includedir}/${header}
     done
+    install -m 0777 ${WORKDIR}/cfitsio-${PV}/cfitsio.pc ${D}${libdir}/pkgconfig/libcfitsio.a
+
     #install -d ${D}${bindir}
     # not installing util binaries yet
 }
+
+ERROR_QA:remove = "staticdev"

@@ -16,4 +16,4 @@ SRC_URI += "file://system_cfitsio.patch"
 
 DEPENDS += "python3-pip-native python3-numpy-native cfitsio"
 
-RDEPENDS:${PN} += " python3-core python3-io python3-numpy"
+RDEPENDS:${PN} += " python3-core python3-io python3-numpy cfitsio"
