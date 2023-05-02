@@ -1,0 +1,161 @@
+diff --git a/plot/Makefile b/plot/Makefile
+index c9a06913..eb96be30 100644
+--- a/plot/Makefile
++++ b/plot/Makefile
+@@ -33,11 +33,6 @@ endif
+ $(COMMON)/makefile.os-features:
+ 	$(MAKE) -C $(COMMON) makefile.os-features
+ 
+-ifeq ($(HAVE_NETPBM),yes)
+-else
+-NETPBM_INC :=
+-NETPBM_LIB :=
+-endif
+ 
+ SO=$(SHAREDLIB_SUFFIX)
+ 
+diff --git a/plot/plotquad.c b/plot/plotquad.c
+index bcd0e4f4..aff7f984 100644
+--- a/plot/plotquad.c
++++ b/plot/plotquad.c
+@@ -207,7 +207,7 @@ int main(int argc, char *args[]) {
+     nquads = dl_size(coords) / (2*dimquads);
+ 
+     if (infn) {
+-#if HAVE_NETPBM
++#if 1
+ #else
+         logverb("No netpbm available: forcing PNG input.\n");
+         pnginput = TRUE;
+@@ -216,7 +216,7 @@ int main(int argc, char *args[]) {
+             logverb("Reading PNG file %s\n", infn);
+             img = cairoutils_read_png(infn, &W, &H);
+         }
+-#if HAVE_NETPBM
++#if 1
+         else {
+             logverb("Reading PPM from %s\n", infn);
+             cairoutils_fake_ppm_init();
+diff --git a/util/Makefile b/util/Makefile
+index c35a8da3..1e83a16e 100644
+--- a/util/Makefile
++++ b/util/Makefile
+@@ -80,11 +80,6 @@ endif
+ NETPBM_INC_ORIG := $(NETPBM_INC)
+ NETPBM_LIB_ORIG := $(NETPBM_LIB)
+ 
+-ifeq ($(HAVE_NETPBM),yes)
+-else
+-NETPBM_INC :=
+-NETPBM_LIB :=
+-endif
+ 
+ CFLAGS += $(CFLAGS_DEF)
+ CFLAGS += -I$(ANBASE_DIR)
+diff --git a/util/an-pnmtofits.c b/util/an-pnmtofits.c
+index 4ae394dc..ad165d2a 100644
+--- a/util/an-pnmtofits.c
++++ b/util/an-pnmtofits.c
+@@ -8,7 +8,7 @@
+ #include "an-bool.h"
+ #include "os-features-config.h" // for HAVE_NETPBM.
+ 
+-#if HAVE_NETPBM
++#if 1
+ #include <netpbm/pam.h>
+ #else
+ #include <arpa/inet.h>
+@@ -31,7 +31,7 @@ static void printHelp(char* progname) {
+            "\n", progname);
+ }
+ 
+-#if HAVE_NETPBM
++#if 1
+ #else
+ 
+ static int skip_whitespace(FILE* fid, int nmax) {
+@@ -150,7 +150,7 @@ int main(int argc, char** args) {
+     anbool onepass = FALSE;
+     bl* pixcache = NULL;
+ 
+-#if HAVE_NETPBM
++#if 1
+     struct pam img;
+     tuple * tuplerow;
+ #else
+@@ -207,7 +207,7 @@ int main(int argc, char** args) {
+     } else
+         outfn = "stdout";
+ 
+-#if HAVE_NETPBM
++#if 1
+     pm_init(args[0], 0);
+     pnm_readpaminit(fid, &img, 
+                     // PAM_STRUCT_SIZE isn't defined until Netpbm 10.23 (July 2004)
+@@ -282,7 +282,7 @@ int main(int argc, char** args) {
+         for (row = 0; row<H; row++) {
+             unsigned int column;
+ 
+-#if HAVE_NETPBM
++#if 1
+             pnm_readpamrow(&img, tuplerow);
+ #else
+             read_pnm_row(fid, W, depth, maxval, rowbuf);
+@@ -292,7 +292,7 @@ int main(int argc, char** args) {
+                 int rtn;
+                 int pixval;
+ 
+-#if HAVE_NETPBM
++#if 1
+                 pixval = tuplerow[column][plane];
+ #else
+                 pixval = (bits == 8 ?
+@@ -312,7 +312,7 @@ int main(int argc, char** args) {
+                 for (column = 0; column<W; column++) {
+                     for (plane=1; plane<depth; plane++) {
+                         int pixval;
+-#if HAVE_NETPBM
++#if 1
+                         pixval = tuplerow[column][plane];
+ #else
+                         pixval = (bits == 8 ?
+@@ -332,7 +332,7 @@ int main(int argc, char** args) {
+         }
+     }
+ 	
+-#if HAVE_NETPBM
++#if 1
+     pnm_freepamrow(tuplerow);
+ #else
+     free(rowbuf);
+diff --git a/util/cairoutils.c b/util/cairoutils.c
+index c46f6997..79f5ab60 100644
+--- a/util/cairoutils.c
++++ b/util/cairoutils.c
+@@ -17,7 +17,7 @@
+ 
+ #include "os-features.h"
+ 
+-#if HAVE_NETPBM
++#if 1
+ #include <netpbm/ppm.h>
+ #endif
+ 
+@@ -538,7 +538,7 @@ static int writeout(const char* outfn, unsigned char* img, int W, int H, int for
+     return 0;
+ }
+ 
+-#if HAVE_NETPBM
++#if 1
+ void cairoutils_fake_ppm_init() {
+     char* fake_args[] = {"cairoutils"};
+     int fake_argc = 1;
+@@ -667,7 +667,7 @@ void cairoutils_rgba_to_argb32_flip(const unsigned char* inimg,
+ }
+ 
+ 
+-#if HAVE_NETPBM
++#if 1
+ unsigned char* cairoutils_read_ppm_stream(FILE* fin, int* pW, int* pH) {
+     int x,y;
+     int W, H, format;

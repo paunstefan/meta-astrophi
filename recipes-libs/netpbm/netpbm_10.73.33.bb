@@ -11,7 +11,8 @@ LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://doc/GPL_LICENSE.txt;md5=079b27cd65c86dbc1b6997ffde902735"
 
 SRC_URI = "https://sourceforge.net/projects/netpbm/files/super_stable/${PV}/netpbm-${PV}.tgz \
- file://shared_files-fix.patch"
+ file://shared_files-fix.patch \
+ file://netpbm.pc"
 SRC_URI[md5sum] = "49f4a7c31a42415c0dd94f6147765705"
 SRC_URI[sha1sum] = "5edc9fdeca86cca60e973e2d3310444016682331"
 SRC_URI[sha256sum] = "e370c3593c3a2a38edd7181c1ebfc40f03dba6ade915ad46ca5d4eb46c3e381a"
@@ -59,10 +60,11 @@ do_install () {
     #20210103 do it manually...
     install -d ${D}/usr/lib
     install -d ${D}/usr/bin
+    install -d ${D}/usr/include/netpbm
     install -d ${D}/usr/share/netpbm
     install -m755 lib/libnetpbm.so.11.73 ${D}/usr/lib/
-    ln -s libnetpbm.so.11.73 ${D}/usr/lib/libnetpbm.so.11
-    ln -s libnetpbm.so.11 ${D}/usr/lib/libnetpbm.so
+    ln -s -r ${D}/usr/lib/libnetpbm.so.11.73 ${D}/usr/lib/libnetpbm.so.11
+    ln -s -r ${D}/usr/lib/libnetpbm.so.11 ${D}/usr/lib/libnetpbm.so
     #20210117 added converter/other/xwdtopnm needed by screeny... also converter/other/svgtopam
     for aX in converter/other/anytopnm converter/other/giftopnm converter/other/jpegtopnm editor/pamcomp editor/pamcut editor/pamdice analyzer/pamfile editor/pamscale analyzer/pamslice other/pamsplit editor/pamstretch converter/other/pamtopng converter/other/pamtotiff generator/pbmtext converter/pbm/pbmtoxbm generator/pgmramp converter/other/pgmtopbm converter/other/pgmtoppm converter/other/pngtopam editor/pnmalias editor/pnmcat other/pnmcolormap editor/pnmconvol editor/pnmnlfilt editor/pnmquant editor/pnmremap editor/pnmrotate editor/pnmsmooth converter/other/pnmtojpeg converter/other/pnmtopng converter/other/pnmtops editor/ppmdither editor/ppmlabel editor/ppmquant generator/ppmrainbow generator/ppmrough converter/ppm/ppmtobmp converter/ppm/ppmtogif converter/other/ppmtopgm converter/ppm/ppmtoxpm converter/other/pstopnm converter/other/tifftopnm converter/pbm/xbmtopbm converter/ppm/xpmtoppm converter/other/xwdtopnm converter/other/svgtopam
     do
@@ -79,6 +81,27 @@ do_install () {
     ln -s pamsplit ${D}/usr/bin/pnmsplit
     ln -s pamtotiff ${D}/usr/bin/pnmtotiff
     ln -s pnmtojpeg ${D}/usr/bin/ppmtojpeg
+
+    install -m644 lib/colorname.h ${D}/usr/include/netpbm/colorname.h
+    install -m644 lib/pam.h ${D}/usr/include/netpbm/pam.h
+    install -m644 lib/pammap.h ${D}/usr/include/netpbm/pammap.h
+    install -m644 lib/pbmfont.h ${D}/usr/include/netpbm/pbmfont.h
+    install -m644 lib/pm.h ${D}/usr/include/netpbm/pm.h
+    install -m644 lib/pm_gamma.h ${D}/usr/include/netpbm/pm_gamma.h
+    install -m644 lib/pnm.h ${D}/usr/include/netpbm/pnm.h
+    install -m644 lib/ppmcmap.h ${D}/usr/include/netpbm/ppmcmap.h
+    install -m644 lib/ppmdraw.h ${D}/usr/include/netpbm/ppmdraw.h
+    install -m644 lib/util/runlength.h ${D}/usr/include/netpbm/runlength.h
+    install -m644 lib/util/mallocvar.h ${D}/usr/include/netpbm/mallocvar.h
+    install -m644 lib/pamdraw.h ${D}/usr/include/netpbm/pamdraw.h
+    install -m644 lib/pbm.h ${D}/usr/include/netpbm/pbm.h
+    install -m644 lib/pgm.h ${D}/usr/include/netpbm/pgm.h
+    install -m644 pm_config.h ${D}/usr/include/netpbm/pm_config.h
+    install -m644 lib/pm_system.h ${D}/usr/include/netpbm/pm_system.h
+    install -m644 lib/ppm.h ${D}/usr/include/netpbm/ppm.h
+    install -m644 lib/ppmdfont.h ${D}/usr/include/netpbm/ppmdfont.h
+    install -m644 lib/ppmfloyd.h ${D}/usr/include/netpbm/ppmfloyd.h
+    install -m644 lib/util/shhopt.h ${D}/usr/include/netpbm/shhopt.h
     
     install -m644 converter/other/pnmtopalm/palmgray1.map ${D}/usr/share/netpbm/
     install -m644 converter/other/pnmtopalm/palmcolor8.map ${D}/usr/share/netpbm/
@@ -86,7 +109,9 @@ do_install () {
     install -m644 converter/other/pnmtopalm/palmgray4.map ${D}/usr/share/netpbm/
     install -m644 converter/ppm/pcxstd.ppm ${D}/usr/share/netpbm/
     install -m644 lib/rgb.txt ${D}/usr/share/netpbm/
-    
+
+    install -d ${D}${libdir}/pkgconfig
+    install -m644 ${WORKDIR}/netpbm.pc ${D}${libdir}/pkgconfig/netpbm.pc
 }
 
 #ERROR: netpbm-10.73.33-r0 do_package_qa: QA Issue: /usr/bin/pnmtotiffcmyk contained in package netpbm requires libtiff.so.5(LIBTIFF_4.0)(64bit), but no providers found in RDEPENDS_netpbm? [file-rdeps]

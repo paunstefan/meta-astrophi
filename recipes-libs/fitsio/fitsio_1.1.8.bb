@@ -16,4 +16,6 @@ SRC_URI += "file://system_cfitsio.patch"
 
 DEPENDS += "python3-pip-native python3-numpy-native cfitsio"
 
-RDEPENDS:${PN} += " python3-core python3-io python3-numpy cfitsio"
+RDEPENDS:${PN} += " python3-core python3-io python3-numpy cfitsio python3-setuptools python3-pprint python3-unittest"
+
+ERROR_QA:remove = "license-file-missing"

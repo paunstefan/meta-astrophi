@@ -31,10 +31,10 @@ do_install () {
     do
         install -m 0755 ${WORKDIR}/cfitsio-${PV}/${header} ${D}${includedir}/${header}
     done
-    install -m 0777 ${WORKDIR}/cfitsio-${PV}/cfitsio.pc ${D}${libdir}/pkgconfig/libcfitsio.a
+    install -m 0777 ${WORKDIR}/cfitsio-${PV}/cfitsio.pc ${D}${libdir}/pkgconfig/cfitsio.pc
 
     #install -d ${D}${bindir}
     # not installing util binaries yet
 }
 
-ERROR_QA:remove = "staticdev"
+ERROR_QA:remove = "staticdev license-file-missing"

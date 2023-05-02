@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib
+includedir=/usr/include/netpbm
+
+Name: netpbm
+Description: Netpbm is a toolkit for manipulation of graphic images.
+URL: https://netpbm.sourceforge.net/
+Version: 10.73.33
+Libs: -L${libdir} -lnetpbm
+Cflags: -I${includedir}
